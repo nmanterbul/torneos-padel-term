@@ -1,0 +1,479 @@
+@startuml
+class edu.masanz.da.torneo.term.menu.MenuAdminAvanzar {
+- {static} Logger logger
+- {static} TorneoService torneoService
++ void run()
+- Torneo pedirTorneo()
+- void mostrarFaseTorneo(Torneo)
+- void revolver(Torneo)
+- void empezar(Torneo)
+- void avanzar(Torneo)
+- void terminar(Torneo)
+- void mostrarResultados(Torneo)
+}
+
+
+class edu.masanz.da.torneo.term.Main {
++ {static} void main(String[])
+}
+
+class edu.masanz.da.torneo.model.EquipoDto {
+- int id
+- String nombre
++ <<Create>> EquipoDto()
++ <<Create>> EquipoDto(int,String)
++ int getId()
++ void setId(int)
++ String getNombre()
++ void setNombre(String)
+}
+
+
+class edu.masanz.da.torneo.model.Usuario {
+- int id
+- String alias
+- String password
+- String nombre
+- int rol
+- int torneo
+- boolean esEquipo
++ <<Create>> Usuario()
++ <<Create>> Usuario(int,String,String,String,int,int,boolean)
++ int getId()
++ void setId(int)
++ String getAlias()
++ void setAlias(String)
++ String getPassword()
++ void setPassword(String)
++ String getNombre()
++ void setNombre(String)
++ int getRol()
++ void setRol(int)
++ int getTorneo()
++ void setTorneo(int)
++ boolean isEsEquipo()
++ void setEsEquipo(boolean)
++ String toXml()
++ String toJson()
++ String toString()
+}
+
+
+class edu.masanz.da.torneo.config.Config {
++ {static} int ROL_ADMIN_ID
++ {static} int ROL_ARBIT_ID
++ {static} int ROL_EQUIPO_ID
++ {static} int ROL_JUGAD_ID
++ {static} int ROL_ESPEC_ID
++ {static} int ROL_NOHAY_ID
++ {static} String ROL_ADMIN
++ {static} String ROL_ARBIT
++ {static} String ROL_EQUIPO
++ {static} String ROL_JUGAD
++ {static} String ROL_ESPEC
++ {static} String ROL_NOHAY
++ {static} String FRM_PAR_ACCION
++ {static} String FRM_PAR_TORNEO
++ {static} String FRM_PAR_NOMBRE_TORNEO
++ {static} String FRM_PAR_EQUIPO
++ {static} String FRM_PAR_NOMBRE_EQUIPO
++ {static} String FRM_PAR_USUARIO
++ {static} String FRM_PAR_ARBITRO
++ {static} String FRM_PAR_ALIAS
++ {static} String FRM_PAR_PASSWORD
++ {static} String FRM_PAR_ROL
++ {static} String FRM_VAL_USUARIO_NINGUNO
++ {static} String SES_ATT_ALIAS_USUARIO
++ {static} String SES_ATT_ROL_USUARIO
++ {static} String SES_ATT_ID_TORNEO
++ {static} String SES_ATT_NOMBRE_TORNEO
++ {static} String MENU_REGRESAR
++ {static} String MENU_SALIR
++ {static} String MENU_ACCION_VER_RESULTADOS
++ {static} String MENU_ACCION_AVANZAR_FASE
++ {static} String MENU_ACCION_CREAR_TORNEO
++ {static} String MENU_ACCION_GESTIONAR_EQUIPOS
++ {static} String MENU_ACCION_GESTIONAR_USUARIOS
++ {static} String MENU_ACCION_BORRAR_TORNEO
++ {static} String MENU_ACCION_SALIR
++ {static} String MENU_ACCION_REGRESAR
++ {static} String MENU_AVANZAR_REVOLVER
++ {static} String MENU_AVANZAR_EMPEZAR
++ {static} String MENU_AVANZAR_REGRESAR
++ {static} String MENU_AVANZAR_SALIR
++ {static} String MENU_AVANZAR_AVANZAR
++ {static} String MENU_AVANZAR_TERMINAR
++ {static} String MENU_USUARIOS_BORRAR
++ {static} String MENU_USUARIOS_CAMBIAR
++ {static} String MENU_USUARIOS_AGREGAR
++ {static} String FASE_TERMINADO
++ {static} String FASE_FINAL
++ {static} String FASE_TERCER_CUARTO
++ {static} String FASE_SEMIFINALES
++ {static} String FASE_CUARTOS
++ {static} String FASE_SIN_EMPEZAR
++ {static} int FASE_TERMINADO_ID
++ {static} int FASE_FINAL_ID
++ {static} int FASE_TERCER_CUARTO_ID
++ {static} int FASE_SEMIFINALES_ID
++ {static} int FASE_CUARTOS_ID
++ {static} int FASE_SIN_EMPEZAR_ID
+}
+
+class edu.masanz.da.torneo.model.Fase {
+- int id
+- String nombre
+- int numeroEquipos
++ <<Create>> Fase()
++ <<Create>> Fase(int,String,int)
++ int getId()
++ void setId(int)
++ String getNombre()
++ void setNombre(String)
++ int getNumeroEquipos()
++ void setNumeroEquipos(int)
++ String toXml()
+}
+
+
+interface edu.masanz.da.torneo.term.menu.IMenu {
+~ void run()
+}
+
+class edu.masanz.da.torneo.model.UsuarioRolDto {
+- String usuario
+- String rol
++ <<Create>> UsuarioRolDto()
++ <<Create>> UsuarioRolDto(String,String)
++ <<Create>> UsuarioRolDto(String,int)
++ String getUsuario()
++ void setUsuario(String)
++ String getRol()
++ void setRol(String)
++ void setRol(int)
+}
+
+
+class edu.masanz.da.torneo.model.Rol {
+- int id
+- String nombre
++ <<Create>> Rol()
++ <<Create>> Rol(int,String)
++ int getId()
++ void setId(int)
++ String getNombre()
++ void setNombre(String)
++ String toXml()
+}
+
+
+interface edu.masanz.da.torneo.dao.ITorneoDao {
++ boolean authenticate(String,String)
+~ Usuario getUsuarioByAlias(String)
+~ Usuario getUsuarioByNombre(String)
+~ TorneoFaseDto[] getTorneosFases()
+~ RegistroResultadosDto[] getResultadosTorneo(int)
+~ Torneo getTorneo(int)
+~ Torneo getTorneo(String)
+~ Fase getFase(int)
+~ RegistroResultadosDto[] getResultadosTorneoFase(int,int)
+~ RegistroResultadosDto[] getResultadosTorneoFases(int,int,int)
+~ void revolverEquipos(int)
+~ boolean avanzarFase(int)
+~ boolean crearTorneo(String,String,String,String)
+~ EquipoDto[] getEquiposTorneo(int)
+~ boolean updateUsuario(Usuario)
+~ UsuarioRolDto[] getUsuariosRolsEaj(int)
+~ boolean deleteUsuarioEaj(String)
+~ boolean insertUsuario(Usuario)
+~ void borrarTorneo(int)
+~ Usuario getUsuarioById(int)
+}
+
+class edu.masanz.da.torneo.term.menu.MenuAdminGestionarUsuarios {
+- {static} Logger logger
+- {static} TorneoService torneoService
++ void run()
+- void mostrarTorneos()
+- int mostrarUsuariosEajTorneo()
+- void agregarUsuario()
+- void cambiarUsuario()
+- void borrarUsuario()
+}
+
+
+class edu.masanz.da.torneo.Main {
++ {static} void main(String[])
+}
+
+class edu.masanz.da.torneo.model.Torneo {
+- int id
+- String nombre
+- int fase
++ <<Create>> Torneo()
++ <<Create>> Torneo(int,String,int)
++ int getId()
++ void setId(int)
++ String getNombre()
++ void setNombre(String)
++ int getFase()
++ void setFase(int)
++ String getIdNombre()
++ String toXml()
++ int avanzarFase()
++ String toJson()
++ String toString()
+}
+
+
+class edu.masanz.da.torneo.dao.DataDaoMock {
++ {static} Rol[] rols
++ {static} Fase[] fases
++ {static} Torneo[] torneos
++ {static} Usuario[] usuarios
++ {static} Registro[] registros
++ {static} Resultado[] resultados
+}
+
+class edu.masanz.da.torneo.model.TorneoFaseDto {
+- int idTorneo
+- String nombreTorneo
+- String nombreFase
++ <<Create>> TorneoFaseDto()
++ <<Create>> TorneoFaseDto(int,String,String)
++ int getIdTorneo()
++ void setIdTorneo(int)
++ String getNombreTorneo()
++ void setNombreTorneo(String)
++ String getNombreFase()
++ void setNombreFase(String)
++ String getDescripcion()
+}
+
+
+class edu.masanz.da.torneo.web.Main {
+- {static} Logger logger
++ {static} void main(String[])
+}
+
+
+class edu.masanz.da.torneo.term.config.Ctes {
++ {static} String TITULO
++ {static} int LONG_TITULO
++ {static} int OPC_SALIR
++ {static} int OPC_ADM_TORNEOS
++ {static} int OPC_ADM_RESULTADOS
++ {static} int OPC_ADM_AVANZAR
++ {static} int OPC_ADM_TORNEO_NUEVO
++ {static} int OPC_ADM_GEST_EQUIPOS
++ {static} int OPC_ADM_GEST_USUARIOS
++ {static} int OPC_ADM_TORNEO_BORRADO
++ {static} int OPC_ADM_AVANZAR_REVOLVER
++ {static} int OPC_ADM_AVANZAR_EMPEZAR
++ {static} int OPC_ADM_AVANZAR_AVANZAR
++ {static} int OPC_ADM_AVANZAR_TERMINAR
++ {static} int OPC_ADM_USUARIOS
++ {static} int OPC_ADM_USUARIOS_AGREGAR
++ {static} int OPC_ADM_USUARIOS_CAMBIAR
++ {static} int OPC_ADM_USUARIOS_BORRAR
+}
+
+class edu.masanz.da.torneo.model.Resultado {
+- int id
+- int registro
+- int numero
+- int valor1
+- int valor2
++ <<Create>> Resultado()
++ <<Create>> Resultado(int,int,int,int,int)
++ int getId()
++ void setId(int)
++ int getRegistro()
++ void setRegistro(int)
++ int getNumero()
++ void setNumero(int)
++ int getValor1()
++ void setValor1(int)
++ int getValor2()
++ void setValor2(int)
++ String toXml()
+}
+
+
+class edu.masanz.da.torneo.model.RegistroResultadosDto {
+- String equipo1
+- String equipo2
+- int[] valores
+- int ganador
++ <<Create>> RegistroResultadosDto()
++ <<Create>> RegistroResultadosDto(String,String,int[],int)
++ <<Create>> RegistroResultadosDto(String,String,int,int,int,int,int,int,int)
++ String getEquipo1()
++ void setEquipo1(String)
++ String getEquipo2()
++ void setEquipo2(String)
++ int[] getValores()
++ void setValores(int[])
++ int getGanador()
++ void setGanador(int)
++ int getValor(int)
++ int getValor(int,int)
++ String getResultado(int)
++ int getNumeroResultados()
++ String toParticipantes()
++ String toResultado()
++ String toString()
+}
+
+
+class edu.masanz.da.torneo.dao.TorneoDaoMock {
++ boolean authenticate(String,String)
++ Usuario getUsuarioByAlias(String)
++ Usuario getUsuarioByNombre(String)
++ TorneoFaseDto[] getTorneosFases()
+- String getNombreEquipo(int)
++ Torneo getTorneo(int)
++ Torneo getTorneo(String)
++ Fase getFase(int)
+- int getNumeroRegistrosFase(int)
++ RegistroResultadosDto[] getResultadosTorneo(int)
++ RegistroResultadosDto[] getResultadosTorneoFase(int,int)
++ RegistroResultadosDto[] getResultadosTorneoFases(int,int,int)
++ void revolverEquipos(int)
++ boolean avanzarFase(int)
+- boolean checkFinFase(int,int)
+- boolean avanzarFaseSinEmpezar(Torneo)
+- boolean avanzarFaseCuartos(Torneo)
+- boolean avanzarFaseSemifinales(Torneo)
+- boolean avanzarFaseFinales(Torneo)
++ boolean crearTorneo(String,String,String,String)
++ EquipoDto[] getEquiposTorneo(int)
++ UsuarioRolDto[] getUsuariosRolsEaj(int)
++ Usuario getUsuarioById(int)
++ boolean insertUsuario(Usuario)
++ boolean updateUsuario(Usuario)
++ boolean deleteUsuarioEaj(String)
++ void borrarTorneo(int)
+}
+
+class edu.masanz.da.torneo.term.menu.MenuAdmin {
+- {static} Logger logger
+- {static} TorneoService torneoService
++ void run()
+- void mostrarTorneos()
+- void verResultados()
+- void avanzarFase()
+- void crearTorneo()
+- void gestionarEquipos()
+- void gestionarUsuarios()
+- void borrarTorneo()
+}
+
+
+class edu.masanz.da.torneo.term.menu.Login {
+- {static} Logger logger
+- {static} TorneoService torneoService
++ void run()
+}
+
+
+class edu.masanz.da.torneo.model.Registro {
+- int id
+- int torneo
+- int fase
+- int arbitro
+- int equipo1
+- int equipo2
+- int ganador
++ <<Create>> Registro()
++ <<Create>> Registro(int,int,int,int,int,int,int)
++ int getId()
++ void setId(int)
++ int getTorneo()
++ void setTorneo(int)
++ int getFase()
++ void setFase(int)
++ int getArbitro()
++ void setArbitro(int)
++ int getEquipo1()
++ void setEquipo1(int)
++ int getEquipo2()
++ void setEquipo2(int)
++ int getGanador()
++ void setGanador(int)
++ String toXml()
+}
+
+
+class edu.masanz.da.torneo.service.TorneoService {
+- ITorneoDao torneoDao
++ boolean authenticate(String,String)
++ Usuario getUsuarioByAlias(String)
++ Usuario getUsuarioByNombre(String)
++ Usuario getUsuarioById(int)
++ Torneo getTorneo(int)
++ Torneo getTorneo(String)
++ Fase getFase(int)
++ TorneoFaseDto[] getTorneosFases()
++ List<String> getAccionesMenuAdm()
++ List<String> getAccionesMenuAvanzarSinEmpezar()
++ List<String> getAccionesMenuAvanzarCuartosSemis()
++ List<String> getAccionesMenuAvanzarTercerFinal()
++ List<String> getAccionesMenuGestionarUsuarios()
++ RegistroResultadosDto[] getResultadosTorneo(int)
++ RegistroResultadosDto[] getResultadosTorneoFase(int,int)
++ RegistroResultadosDto[] getResultadosTorneoFases(int,int,int)
++ void revolverEquipos(int)
++ boolean avanzarFase(int)
++ boolean crearTorneo(String,String,String,String)
++ EquipoDto[] getEquiposTorneo(int)
++ UsuarioRolDto[] getUsuariosRolsEaj(int)
++ boolean updateUsuario(Usuario)
++ boolean insertUsuario(Usuario)
++ boolean deleteUsuarioEaj(String)
++ void borrarTorneo(int)
+}
+
+
+class edu.masanz.da.torneo.term.ui.Gui {
+- {static} Scanner scanner
++ {static} void mostrarTitulo(String)
++ {static} void mostrarSubtitulo(String)
++ {static} void mostrarCentrado(String)
++ {static} void mostrarTexto(String)
++ {static} void mostrarTituloMenuAdmin()
++ {static} void mostrarTituloMenuAdminAvanzar()
++ {static} void mostrarTituloMenuGestionarUsuarios()
++ {static} void mostrarTituloAutenticacion()
++ {static} void mostrarTituloExit()
++ {static} void mostrarAutenticacion(boolean)
++ {static} void mostrarError(String)
++ {static} int leerOpcion(String,int,int)
++ {static} boolean leerConfirmacion(String,int,String)
++ {static} boolean leerConfirmacionSalir()
++ {static} String leerTexto(String,int)
++ {static} int leerNumero(String,int)
++ {static} int leerOpcionMenu(int,int)
++ {static} void mostrarMenuAdmin()
++ {static} void mostrarMenuAdminAvanzar()
++ {static} void mostrarMenuGestionarUsuarios()
++ {static} void mostrarTorneosFases(TorneoFaseDto[])
++ {static} void mostrarEquipos(EquipoDto[])
++ {static} void mostrarUsuariosRols(UsuarioRolDto[])
++ {static} void mostrarRolsEaj()
++ {static} void mostrarResultadosTorneo(RegistroResultadosDto[])
++ {static} void mostrarResultadosTorneoSinEmpezar(RegistroResultadosDto[],int)
++ {static} void mostrarResultadosTorneo(RegistroResultadosDto[],int)
++ {static} void mostrarListado(List<String>)
+}
+
+
+
+
+edu.masanz.da.torneo.term.menu.IMenu <|.. edu.masanz.da.torneo.term.menu.MenuAdminAvanzar
+java.io.Serializable <|.. edu.masanz.da.torneo.model.Usuario
+edu.masanz.da.torneo.term.menu.IMenu <|.. edu.masanz.da.torneo.term.menu.MenuAdminGestionarUsuarios
+edu.masanz.da.torneo.dao.ITorneoDao <|.. edu.masanz.da.torneo.dao.TorneoDaoMock
+edu.masanz.da.torneo.term.menu.IMenu <|.. edu.masanz.da.torneo.term.menu.MenuAdmin
+edu.masanz.da.torneo.term.menu.IMenu <|.. edu.masanz.da.torneo.term.menu.Login
+@enduml

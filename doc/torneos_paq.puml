@@ -1,0 +1,110 @@
+@startuml
+class edu.masanz.da.torneo.term.menu.MenuAdminAvanzar {
+
+}
+
+
+class edu.masanz.da.torneo.term.Main {
+}
+
+class edu.masanz.da.torneo.model.EquipoDto {
+}
+
+
+class edu.masanz.da.torneo.model.Usuario {
+}
+
+
+class edu.masanz.da.torneo.config.Config {
+}
+
+class edu.masanz.da.torneo.model.Fase {
+}
+
+
+interface edu.masanz.da.torneo.term.menu.IMenu {
+}
+
+class edu.masanz.da.torneo.model.UsuarioRolDto {
+}
+
+
+class edu.masanz.da.torneo.model.Rol {
+}
+
+
+interface edu.masanz.da.torneo.dao.ITorneoDao {
+}
+
+class edu.masanz.da.torneo.term.menu.MenuAdminGestionarUsuarios {
+}
+
+
+class edu.masanz.da.torneo.Main {
+}
+
+class edu.masanz.da.torneo.model.Torneo {
+}
+
+
+class edu.masanz.da.torneo.dao.DataDaoMock {
+}
+
+class edu.masanz.da.torneo.model.TorneoFaseDto {
+}
+
+
+
+
+class edu.masanz.da.torneo.term.config.Ctes {
+}
+
+class edu.masanz.da.torneo.model.Resultado {
+}
+
+
+class edu.masanz.da.torneo.model.RegistroResultadosDto {
+}
+
+
+class edu.masanz.da.torneo.dao.TorneoDaoMock {
+}
+
+class edu.masanz.da.torneo.term.menu.MenuAdmin {
+}
+
+
+class edu.masanz.da.torneo.term.menu.Login {
+}
+
+
+class edu.masanz.da.torneo.model.Registro {
+}
+
+
+class edu.masanz.da.torneo.service.TorneoService {
+}
+
+
+class edu.masanz.da.torneo.term.ui.Gui {
+}
+
+
+
+
+edu.masanz.da.torneo.term.menu.IMenu <|.. edu.masanz.da.torneo.term.menu.MenuAdminAvanzar
+edu.masanz.da.torneo.term.menu.IMenu <|.. edu.masanz.da.torneo.term.menu.MenuAdminGestionarUsuarios
+edu.masanz.da.torneo.dao.ITorneoDao <|.. edu.masanz.da.torneo.dao.TorneoDaoMock
+edu.masanz.da.torneo.term.menu.IMenu <|.left. edu.masanz.da.torneo.term.menu.MenuAdmin
+edu.masanz.da.torneo.term.menu.IMenu <|.right. edu.masanz.da.torneo.term.menu.Login
+
+edu.masanz.da.torneo.Main ..> edu.masanz.da.torneo.term.Main
+edu.masanz.da.torneo.term.Main ..> edu.masanz.da.torneo.term.menu.IMenu
+edu.masanz.da.torneo.term.menu ..> edu.masanz.da.torneo.service.TorneoService
+edu.masanz.da.torneo.service.TorneoService --> edu.masanz.da.torneo.dao.ITorneoDao
+edu.masanz.da.torneo.dao.TorneoDaoMock ..> edu.masanz.da.torneo.dao.DataDaoMock
+edu.masanz.da.torneo.dao.TorneoDaoMock ..> edu.masanz.da.torneo.model
+edu.masanz.da.torneo.service.TorneoService ..> edu.masanz.da.torneo.model
+edu.masanz.da.torneo.term.menu ..> edu.masanz.da.torneo.term.ui.Gui
+edu.masanz.da.torneo.term ..> edu.masanz.da.torneo.model
+@enduml
