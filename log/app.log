@@ -10,3 +10,11 @@
 [2025-12-02 12:17:05] [INFO ] [Login: 19] login
 [2025-12-02 12:17:12] [INFO ] [Login: 36] alias: admin AUTH
 [2025-12-02 12:17:12] [INFO ] [MenuAdmin: 21] menu-admin
+[2025-12-03 17:49:20] [INFO ] [Login: 19] login
+[2025-12-03 17:49:28] [INFO ] [Login: 36] alias: ADMIN NO AUTH
+[2025-12-03 17:49:34] [INFO ] [Login: 36] alias: admin AUTH
+[2025-12-03 17:49:34] [INFO ] [MenuAdmin: 21] menu-admin
+[2025-12-03 18:24:36] [INFO ] [Login: 19] login
+[2025-12-03 18:24:40] [INFO ] [Login: 36] alias: admin AUTH
+[2025-12-03 18:24:40] [INFO ] [MenuAdmin: 21] menu-admin
+[2025-12-03 18:25:03] [INFO ] [MenuAdminAvanzar: 23] menu-admin-avanzar

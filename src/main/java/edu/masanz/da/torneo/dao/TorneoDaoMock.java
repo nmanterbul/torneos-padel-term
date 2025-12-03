@@ -53,6 +53,13 @@ public class TorneoDaoMock implements ITorneoDao {
         // TODO 03: Implementar la búsqueda de usuario por nombre
 
 
+        for (int i = 0; i < usuarios.length; i++) {
+            Usuario u = usuarios[i];
+            if(u != null && u.getNombre() == nombre){
+                    return u;
+            }
+
+        }
 
 
 
@@ -68,9 +75,23 @@ public class TorneoDaoMock implements ITorneoDao {
         int k = 0;
 
         for (int i = 0; i < torneos.length; i++) {
-            if(torneos != null){
-                
-            }
+           Torneo t = torneos[i];
+           if(t != null){
+               int idFaseTorneo = t.getFase();
+               String nombreFaseTorneo = null;
+               // buscar la fase que corresponde
+
+               for (int j = 0; j <fases.length ; j++) {
+                   Fase f = fases[i];
+
+                   if(f.getId() == idFaseTorneo){
+                       nombreFaseTorneo = f.getNombre();
+                   }
+               }
+               TorneoFaseDto tf = new TorneoFaseDto(t.getId(),t.getNombre(),nombreFaseTorneo);
+                a[k] = tf;
+                k++;
+           }
         }
 
 
@@ -93,7 +114,14 @@ public class TorneoDaoMock implements ITorneoDao {
         // TODO 05: Implementar la obtención del nombre del equipo por su id
 
 
+        for (int i = 0; i < usuarios.length; i++) {
+            Usuario t = new Usuario();
+            if(t != null && idEquipo == t.getRol()){
+              return t.getNombre();
 
+            }
+
+        }
 
 
 
@@ -104,7 +132,14 @@ public class TorneoDaoMock implements ITorneoDao {
     public Torneo getTorneo(int idTorneo) {
         // TODO 06: Implementar la búsqueda de torneo por id
 
+        for (int i = 0; i < torneos.length; i++) {
+            Torneo t = torneos[i];
 
+            if(t != null && t.getId() == idTorneo){
+                return t;
+            }
+
+        }
 
 
 
@@ -116,7 +151,15 @@ public class TorneoDaoMock implements ITorneoDao {
     public Torneo getTorneo(String nombreTorneo) {
         // TODO 07: Implementar la búsqueda de torneo por nombre
 
+        for (int i = 0; i < torneos.length; i++) {
 
+            Torneo t = torneos[i];
+
+            if(t != null && t.getNombre() == nombreTorneo){
+
+                return t;
+            }
+        }
 
 
 
@@ -128,7 +171,18 @@ public class TorneoDaoMock implements ITorneoDao {
     public Fase getFase(int idTorneo) {
         // TODO 08: Implementar la obtención de la fase actual de un torneo
 
+        for (int i = 0; i < torneos.length; i++) {
+            Torneo t = torneos[i];
+            if(t != null && t.getId() == idTorneo){
+                for (int j = 0; j < fases.length; j++) {
+                    Fase f = fases[j];
+                    if(f.equals(t.getFase())){
+                        return  f;
+                    }
+                }
 
+            }
+        }
 
 
 
@@ -143,6 +197,15 @@ public class TorneoDaoMock implements ITorneoDao {
         // TODO 09: Implementar la obtención del número de registros (partidos) de una fase
         // Usar el array fases. El número de registros (partidos) es la mitad del número de equipos
 
+        for (int i = 0; i < fases.length; i++) {
+
+            Fase t = fases[i];
+            if (t != null && t.getId() == idFase){
+
+            return t.getNumeroEquipos();
+
+            }
+        }
 
 
 
@@ -162,7 +225,15 @@ public class TorneoDaoMock implements ITorneoDao {
 
         RegistroResultadosDto[] rrd = new RegistroResultadosDto[8];
 
+        for (int i = 0; i < rrd.length; i++) {
 
+            Torneo t = torneos[i];
+
+            if(t != null && t.getId() == idTorneo){
+
+                return rrd;
+            }
+        }
 
 
 
