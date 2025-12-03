@@ -225,17 +225,24 @@ public class TorneoDaoMock implements ITorneoDao {
 
         RegistroResultadosDto[] rrd = new RegistroResultadosDto[8];
 
-        for (int i = 0; i < rrd.length; i++) {
 
-            Torneo t = torneos[i];
 
-            if(t != null && t.getId() == idTorneo){
+        for (int i = 0; i < torneos.length; i++) {
 
-                return rrd;
-            }
+
+
+                Torneo t = torneos[i];
+
+
+                if(t != null && t.getId() == idTorneo){
+
+
+                    return rrd;
+                }
+
+
+
         }
-
-
 
 
 
@@ -260,6 +267,15 @@ public class TorneoDaoMock implements ITorneoDao {
         RegistroResultadosDto[] rrd = new RegistroResultadosDto[n];
 
 
+        for (int i = 0; i < torneos.length; i++) {
+
+            Torneo t = torneos[i];
+
+            if (t != null && t.getId() == idTorneo && t.getFase() == idFase){
+
+                return rrd;
+            }
+        }
 
 
 
