@@ -202,7 +202,7 @@ public class TorneoDaoMock implements ITorneoDao {
             Fase t = fases[i];
             if (t != null && t.getId() == idFase){
 
-            return t.getNumeroEquipos();
+            return t.getNumeroEquipos()/2;
 
             }
         }
@@ -301,8 +301,63 @@ public class TorneoDaoMock implements ITorneoDao {
         RegistroResultadosDto[] rrd2 = getResultadosTorneoFase(idTorneo, idFase2);
         RegistroResultadosDto[] rrd = new RegistroResultadosDto[rrd1.length + rrd2.length];
 
+        boolean existeFase1 = false;
+        boolean existeFase2 = false;
+
+        for (int j = 0; j < torneos.length; j++) {
+
+            Torneo t = torneos[j];
+
+            if (t != null && t.getId() == idTorneo){
+                for (int i = 0; i < fases.length; i++) {
+
+                    Fase f = fases[i];
+
+                    if (f !=null && f.getId() == idFase1){
+                        return rrd1;
+                    }
+
+                }
+
+            }
 
 
+        }
+
+
+        for (int j = 0; j < torneos.length; j++) {
+
+            Torneo t = torneos[j];
+
+            if (t != null && t.getId() == idTorneo){
+                for (int i = 0; i < fases.length; i++) {
+
+                    Fase f = fases[i];
+
+                    if (f !=null   &&f.getId() == idFase2){
+                        return rrd2;
+                    }
+
+                }
+            }
+
+        }
+
+        if (!existeFase1 || !existeFase2) {
+            return new RegistroResultadosDto[0];
+        }
+
+
+        for (int i = 0; i < rrd1.length; i++) {
+
+            rrd[i] = rrd1[i];
+
+        }
+
+        for (int i = 0; i < rrd2.length; i++) {
+
+            rrd[rrd1.length +i] = rrd2[i];
+        }
 
 
 
@@ -327,8 +382,16 @@ public class TorneoDaoMock implements ITorneoDao {
         int j = 0;
 
 
-
-
+//
+//        for (int k = 0; k < torneos.length; k++) {
+//
+//            TorneoFaseDto[] TorneoFaseDto;
+//            TorneoFaseDto t = TorneoFaseDto[k];
+//
+//            if(t !=null && t.getIdTorneo() == idTorneo && t.)
+//
+//        }
+//
 
 
 
