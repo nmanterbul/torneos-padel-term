@@ -382,16 +382,20 @@ public class TorneoDaoMock implements ITorneoDao {
         int j = 0;
 
 
-//
+
+
 //        for (int k = 0; k < torneos.length; k++) {
 //
-//            TorneoFaseDto[] TorneoFaseDto;
-//            TorneoFaseDto t = TorneoFaseDto[k];
 //
-//            if(t !=null && t.getIdTorneo() == idTorneo && t.)
+//            Torneo t = torneos[k];
+//
+//            if(t !=null && t.getId() == idTorneo && FASE_SIN_EMPEZAR){
+//
+//
+//            }
 //
 //        }
-//
+
 
 
 
@@ -441,9 +445,11 @@ public class TorneoDaoMock implements ITorneoDao {
         // Si la fase actual es tercer y cuarto puesto o final, comprobar ambos registros
 
 
+        for (int i = 0; i < registros.length; i++) {
 
 
 
+        }
 
 
 
