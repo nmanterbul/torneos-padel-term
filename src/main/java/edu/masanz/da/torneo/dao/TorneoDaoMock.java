@@ -2,6 +2,7 @@ package edu.masanz.da.torneo.dao;
 
 import java.util.Arrays;
 
+import edu.masanz.da.torneo.config.Config;
 import edu.masanz.da.torneo.model.*;
 
 import static edu.masanz.da.torneo.config.Config.*;
@@ -384,17 +385,17 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
 
-//        for (int k = 0; k < torneos.length; k++) {
-//
-//
-//            Torneo t = torneos[k];
-//
-//            if(t !=null && t.getId() == idTorneo && FASE_SIN_EMPEZAR){
-//
-//
-//            }
-//
-//        }
+        for (int k = 0; k < torneos.length; k++) {
+
+
+            Torneo t = torneos[k];
+
+            if(t !=null && t.getId() == idTorneo && Boolean.parseBoolean(FASE_SIN_EMPEZAR)){
+
+
+            }
+
+        }
 
 
 
@@ -447,6 +448,14 @@ public class TorneoDaoMock implements ITorneoDao {
 
         for (int i = 0; i < registros.length; i++) {
 
+            Registro r = registros[i];
+
+            if(r !=null && !Boolean.parseBoolean(Config.FASE_TERMINADO) && r.getGanador() >0 ){
+                if(idFaseActual == FASE_TERCER_CUARTO_ID && idFaseActual == FASE_FINAL_ID){
+                    avanzarFase(idTorneo);
+                }
+
+            }
 
 
         }
@@ -474,6 +483,14 @@ public class TorneoDaoMock implements ITorneoDao {
         // TODO 15: Implementar el avance de fase desde Sin Empezar a Cuartos
         // Poner la fase de todos los registros del torneo que estuviesen en Sin Empezar a Cuartos
 
+        for (int i = 0; i < torneos.length; i++) {
+
+            Torneo t = torneos[i];
+            if(t!=null && t == torneo && Boolean.parseBoolean(Config.FASE_SIN_EMPEZAR)){
+                return true;
+            }
+
+        }
 
 
 
@@ -481,8 +498,7 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
 
-
-        return true;
+        return false;
     }
 
     private boolean avanzarFaseCuartos(Torneo torneo) {
@@ -493,6 +509,21 @@ public class TorneoDaoMock implements ITorneoDao {
         // Obtener un array auxiliar con los ids de los equipos ganadores de cuartos de los registros
         // Definir los partidos de semifinales con los ganadores de cuartos en los registros
 
+        boolean avanzarFase = true;
+        int IdFaseAnterior = 0;
+        int IDFaseNueva = 0;
+        for (int i = 0; i < torneos.length; i++) {
+
+            Torneo t = torneos[i];
+            if(t !=null && !Boolean.parseBoolean(Config.FASE_SIN_EMPEZAR)){
+
+                return avanzarFase;
+            } else if (avanzarFase) {
+                if (IdFaseAnterior == FASE_CUARTOS_ID && IDFaseNueva == FASE_SEMIFINALES_ID){
+                    
+                }
+            }
+        }
 
 
 
@@ -516,8 +547,7 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
 
-
-        return true;
+        return false;
     }
 
     private boolean avanzarFaseSemifinales(Torneo torneo) {
