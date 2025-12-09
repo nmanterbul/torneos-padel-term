@@ -293,7 +293,7 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
 
-        return rrd;
+        return null;
     }
 
     public RegistroResultadosDto[] getResultadosTorneoFases(int idTorneo, int idFase1, int idFase2) {
@@ -706,7 +706,7 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
 
-        UsuarioRolDto[] a = new UsuarioRolDto[0];
+
 
 
         for (int j = 0; j < torneos.length; j++) {
@@ -726,7 +726,7 @@ public class TorneoDaoMock implements ITorneoDao {
                 }
             }
             if (s !=null && s.getId() != idTorneo){
-                return a;
+                return new UsuarioRolDto[0];
             }
 
         }
@@ -799,12 +799,14 @@ public class TorneoDaoMock implements ITorneoDao {
     public boolean updateUsuario(Usuario usuario) {
         // TODO 24: Implementar la actualización de un usuario existente
 
-//        for (int i = 0; i < usuarios.length; i++) {
-//
-//            if(usuario !=null && usuario.){
-//
-//            }
-//        }
+        for (int i = 0; i < usuarios.length; i++) {
+
+            Usuario u = usuarios[i];
+            if(usuario !=null && usuario == u ){
+
+                usuario.se;
+            }
+        }
 
         return true;
     }
