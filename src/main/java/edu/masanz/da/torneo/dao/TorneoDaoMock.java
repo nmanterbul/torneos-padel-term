@@ -235,11 +235,19 @@ public class TorneoDaoMock implements ITorneoDao {
                 Torneo t = torneos[i];
 
 
-                if(t != null && t.getId() == idTorneo){
+                if (t != null){
+                    if(t.getId() == idTorneo){
 
 
-                    return rrd;
+                        return rrd;
+                    }
+
+
+
                 }
+
+
+
 
 
 
@@ -272,9 +280,19 @@ public class TorneoDaoMock implements ITorneoDao {
 
             Torneo t = torneos[i];
 
-            if (t != null && t.getId() == idTorneo && t.getFase() == idFase){
+            if (t != null && t.getId() == idTorneo  ){
 
-                return rrd;
+                for (int j = 0; j < fases.length; j++) {
+
+                    Fase f = fases[i];
+
+                    if(f !=null && f.getId() == idFase){
+
+                        return rrd;
+
+                    }
+
+                }
             }
         }
 
@@ -804,7 +822,7 @@ public class TorneoDaoMock implements ITorneoDao {
             Usuario u = usuarios[i];
             if(usuario !=null && usuario == u ){
 
-                usuario.se;
+//                usuario.se;
             }
         }
 
@@ -817,7 +835,17 @@ public class TorneoDaoMock implements ITorneoDao {
         // Devuelve true si se borra (podría ser que no existiese)
 
 
+        for (int i = 0; i < usuarios.length; i++) {
 
+            Usuario u = usuarios[i];
+
+            if (u != null && u.getAlias() == alias && alias == ROL_EQUIPO || alias == ROL_ARBIT || alias == ROL_ESPEC){
+
+                return true;
+
+            }
+
+        }
 
 
 
@@ -839,9 +867,35 @@ public class TorneoDaoMock implements ITorneoDao {
         // Resetea todos los resultados a 0-0
 
 
+        TorneoFaseDto[] torneosResultados = new TorneoFaseDto[torneos.length];
+
+        for (int i = 0; i < torneos.length; i++) {
+            Torneo t = torneos[i];
+
+            if(t !=null && t.getId() == idTorneo){
+
+                t.setId(0);
+                t.setNombre(null);
+                t.setFase(0);
+                torneosResultados = null;
+                for (int j = 0; j < usuarios.length; j++) {
+
+                    Usuario u = usuarios[i];
+                    u.setTorneo(0);
+                    u.setId(0);
+                    u.setAlias(null);
+                    u.setRol(0);
+                    u.setNombre(null);
+                    u.setPassword(null);
+                    u.setEsEquipo(false);
+
+                }
+
+            }
 
 
 
+        }
 
 
 
