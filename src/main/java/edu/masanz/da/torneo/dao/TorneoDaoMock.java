@@ -2,13 +2,18 @@ package edu.masanz.da.torneo.dao;
 
 import java.util.Arrays;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import edu.masanz.da.torneo.config.Config;
 import edu.masanz.da.torneo.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static edu.masanz.da.torneo.config.Config.*;
 import static edu.masanz.da.torneo.dao.DataDaoMock.*;
 
 public class TorneoDaoMock implements ITorneoDao {
+
+    private static final Logger log = LoggerFactory.getLogger(TorneoDaoMock.class);
 
     @Override
     public boolean authenticate(String alias, String password) {
@@ -177,7 +182,7 @@ public class TorneoDaoMock implements ITorneoDao {
             if(t != null && t.getId() == idTorneo){
                 for (int j = 0; j < fases.length; j++) {
                     Fase f = fases[j];
-                    if(f.equals(t.getFase())){
+                    if(f.getId() ==  t.getFase()){
                         return  f;
                     }
                 }
@@ -395,43 +400,45 @@ public class TorneoDaoMock implements ITorneoDao {
         //  - Hacer 32 intercambios aleatorios entre los ids de los equipos
         // Fijar los equipos revolvidos en los registros del torneo
         //  - Recorrer las posiciones de los registros y asignar los ids de los equipos revolvidos
+
+        // Solo se pueden revolver los equipos si el torneo está en fase Sin Empezar
+        Torneo torneo = torneos[idTorneo];
+        if (torneo == null || torneo.getFase() != FASE_SIN_EMPEZAR_ID) { return; }
         int[] posRegistros = new int[4];
         int i = 0;
         int[] equipoIds = new int[8];
         int j = 0;
-
-
-
-
-        for (int k = 0; k < torneos.length; k++) {
-
-
-            Torneo t = torneos[k];
-
-            if(t !=null && t.getId() == idTorneo && Boolean.parseBoolean(FASE_SIN_EMPEZAR)){
-
-
+        // Buscar los registros del torneo (de la fase Sin Empezar únicamente)
+        //  - En un array guardar las posiciones de esos registros
+        //  - En otro array guardar los ids de los equipos de esos registros
+        for (int k = 0; k < registros.length; k++) {
+            Registro r = registros[k];
+            if( r.getId() == idTorneo && r.getFase() == FASE_SIN_EMPEZAR_ID){
+                posRegistros[i++] = k;
+                equipoIds[j++] = r.getEquipo1();
+                equipoIds[j++] = r.getEquipo2();
             }
-
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // Revolver los equipos entre esos registros
+        //  - Hacer 32 intercambios aleatorios entre los ids de los equipos
+        for (int k = 0; k < 32; k++) {
+            int x = (int)  (Math.random()*8);
+            int y = (int)  (Math.random()*8);
+            int t = equipoIds[x];
+            equipoIds[x] = equipoIds[y];
+            equipoIds[y] = t;
+        }
+        // Fijar los equipos revolvidos en los registros del torneo
+        //  - Recorrer las posiciones de los registros y asignar los ids de los equipos revolvidos
+        j = 0;
+        for (int k = 0; k < 4; k++) {
+            int pos = posRegistros[k];
+            Registro r = registros[pos];
+            int equipo1 = equipoIds[j++];
+            r.setEquipo1(equipo1);
+            int equipo2 = equipoIds[j++];
+            r.setEquipo2(equipo2);
+        }
     }
 
     @Override
@@ -463,20 +470,41 @@ public class TorneoDaoMock implements ITorneoDao {
         // Para ello, recorrer todos los registros buscando los del torneo y fase actual
         // Si la fase actual es tercer y cuarto puesto o final, comprobar ambos registros
 
+        Torneo t = torneos[idTorneo];
+        if(t == null && t.getFase() != FASE_SIN_EMPEZAR_ID){
+            return false;
+        }
+
 
         for (int i = 0; i < registros.length; i++) {
 
             Registro r = registros[i];
 
-            if(r !=null && !Boolean.parseBoolean(Config.FASE_TERMINADO) && r.getGanador() >0 ){
-                if(idFaseActual == FASE_TERCER_CUARTO_ID && idFaseActual == FASE_FINAL_ID){
-                    avanzarFase(idTorneo);
-                }
+            if(r != null && r.getFase() == idFaseActual && ! Boolean.parseBoolean(String.valueOf(Config.FASE_SIN_EMPEZAR_ID)) ){
 
             }
 
 
         }
+
+
+
+
+
+//
+//        for (int i = 0; i < registros.length; i++) {
+//
+//            Registro r = registros[i];
+//
+//            if(r !=null && !Boolean.parseBoolean(Config.FASE_TERMINADO) && r.getGanador() >0 ){
+//                if(idFaseActual == FASE_TERCER_CUARTO_ID && idFaseActual == FASE_FINAL_ID){
+//                    avanzarFase(idTorneo);
+//                }
+//
+//            }
+//
+//
+//        }
 
 
 
@@ -489,6 +517,7 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
         return true;
+
     }
 
     /**
