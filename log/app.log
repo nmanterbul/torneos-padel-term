@@ -32,3 +32,8 @@
 [2025-12-07 13:40:29] [INFO ] [Login: 36] alias: admin AUTH
 [2025-12-07 13:40:29] [INFO ] [MenuAdmin: 21] menu-admin
 [2025-12-07 13:40:46] [INFO ] [MenuAdminGestionarUsuarios: 21] menu-admin-gestionar-usuarios
+[2026-01-01 13:54:35] [INFO ] [Login: 19] login
+[2026-01-01 13:54:43] [INFO ] [Login: 36] alias: admin AUTH
+[2026-01-01 13:54:43] [INFO ] [MenuAdmin: 21] menu-admin
+[2026-01-01 13:54:58] [INFO ] [MenuAdminAvanzar: 23] menu-admin-avanzar
+[2026-01-01 13:56:13] [INFO ] [MenuAdminAvanzar: 23] menu-admin-avanzar

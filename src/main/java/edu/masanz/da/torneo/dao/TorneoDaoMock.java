@@ -30,8 +30,6 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
 
-
-
         return false;
     }
 
@@ -61,7 +59,7 @@ public class TorneoDaoMock implements ITorneoDao {
 
         for (int i = 0; i < usuarios.length; i++) {
             Usuario u = usuarios[i];
-            if(u != null && u.getNombre() == nombre){
+            if(u != null && u.getNombre().equals(nombre)){
                     return u;
             }
 
@@ -161,7 +159,7 @@ public class TorneoDaoMock implements ITorneoDao {
 
             Torneo t = torneos[i];
 
-            if(t != null && t.getNombre() == nombreTorneo){
+            if(t != null && t.getNombre().equals(nombreTorneo)){
 
                 return t;
             }
@@ -471,21 +469,38 @@ public class TorneoDaoMock implements ITorneoDao {
         // Si la fase actual es tercer y cuarto puesto o final, comprobar ambos registros
 
         Torneo t = torneos[idTorneo];
-        if(t == null && t.getFase() != FASE_SIN_EMPEZAR_ID){
+        if(t == null || t.getFase() != FASE_TERMINADO_ID){
             return false;
         }
+
+        Fase fase = fases[idFaseActual];
 
 
         for (int i = 0; i < registros.length; i++) {
 
             Registro r = registros[i];
 
-            if(r != null && r.getFase() == idFaseActual && ! Boolean.parseBoolean(String.valueOf(Config.FASE_SIN_EMPEZAR_ID)) ){
+            if(r != null && r.getTorneo() == idTorneo && r.getFase() == idFaseActual && ! Boolean.parseBoolean(String.valueOf(Config.FASE_SIN_EMPEZAR_ID)) ){
+                return true;
+            }
+            if(r!= null && r.getFase() == FASE_TERCER_CUARTO_ID || r.getFase() == FASE_FINAL_ID ){
+
+
+
+                /*
+                return  r.getTorneo();
+                return r.getFase();
+
+
+                 */
 
             }
 
 
         }
+
+
+
 
 
 
@@ -533,16 +548,14 @@ public class TorneoDaoMock implements ITorneoDao {
         for (int i = 0; i < torneos.length; i++) {
 
             Torneo t = torneos[i];
-            if(t!=null && t == torneo && Boolean.parseBoolean(Config.FASE_SIN_EMPEZAR)){
+
+            if(t!=null && t == torneo &&  t.getFase() == FASE_SIN_EMPEZAR_ID  && t.getFase()== FASE_CUARTOS_ID){
                 t.avanzarFase();
                 return true;
             }
 
+
         }
-
-
-
-
 
 
 
@@ -560,6 +573,7 @@ public class TorneoDaoMock implements ITorneoDao {
         boolean avanzarFase = true;
         int IdFaseAnterior = 0;
         int IDFaseNueva = 0;
+        int[] idEquipo = new int[4];
         for (int i = 0; i < torneos.length; i++) {
 
             Torneo t = torneos[i];
@@ -653,11 +667,23 @@ public class TorneoDaoMock implements ITorneoDao {
         // Si se puede, avanzar la fase del torneo a Terminado
 
 
+        for (int i = 0; i <torneos.length; i++) {
+
+            Torneo t = torneos[i];
+
+            int idFaseAnterior =  t.getFase();
+            int idFaseNueva =  t.getFase();
+            if (t != null && idFaseAnterior == FASE_TERCER_CUARTO_ID || idFaseAnterior == FASE_FINAL_ID && idFaseNueva == FASE_TERMINADO_ID){
+                avanzarFase(FASE_TERMINADO_ID);
+                return true;
+
+            }
 
 
+        }
 
 
-        return true;
+        return false;
     }
 
     @Override
@@ -681,6 +707,23 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
 
+
+
+        for (int i = 0; i < torneos.length; i++) {
+
+            Torneo t = new Torneo();
+            Torneo s = torneos[i];
+
+            /*
+            if (){
+                return false;
+
+            }
+
+             */
+
+
+        }
 
 
 
@@ -756,6 +799,8 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
 
+
+
         for (int j = 0; j < torneos.length; j++) {
             Torneo s = torneos[j];
             if(s != null && s.getId() == idTorneo){
@@ -773,7 +818,7 @@ public class TorneoDaoMock implements ITorneoDao {
                 }
             }
             if (s !=null && s.getId() != idTorneo){
-                return new UsuarioRolDto[0];
+                return new UsuarioRolDto[i];
             }
 
         }
@@ -846,16 +891,28 @@ public class TorneoDaoMock implements ITorneoDao {
     public boolean updateUsuario(Usuario usuario) {
         // TODO 24: Implementar la actualización de un usuario existente
 
+        if (usuario == null) {
+            return false;
+        }
+
         for (int i = 0; i < usuarios.length; i++) {
 
             Usuario u = usuarios[i];
-            if(usuario !=null && usuario == u ){
+            if(usuario !=null && u.equals(usuario)){
 
-//                usuario.se;
+                u.setTorneo(usuario.getTorneo());
+                u.setRol(usuario.getRol());
+                u.setNombre(usuario.getNombre());
+                u.setAlias(usuario.getAlias());
+                u.setPassword(usuario.getPassword());
+                u.setEsEquipo(usuario.isEsEquipo());
+
+                return  true;
             }
         }
 
-        return true;
+        return false;
+
     }
 
     @Override
@@ -906,7 +963,7 @@ public class TorneoDaoMock implements ITorneoDao {
                 t.setId(0);
                 t.setNombre(null);
                 t.setFase(0);
-                torneosResultados = null;
+                torneosResultados = new TorneoFaseDto[0];
                 for (int j = 0; j < usuarios.length; j++) {
 
                     Usuario u = usuarios[i];
