@@ -233,27 +233,13 @@ public class TorneoDaoMock implements ITorneoDao {
 
         for (int i = 0; i < torneos.length; i++) {
 
-
-
                 Torneo t = torneos[i];
 
-
-                if (t != null){
-                    if(t.getId() == idTorneo){
-
+                if (t != null && t.getId() == idTorneo){
 
                         return rrd;
-                    }
-
-
 
                 }
-
-
-
-
-
-
         }
 
 
@@ -294,7 +280,6 @@ public class TorneoDaoMock implements ITorneoDao {
                         return rrd;
 
                     }
-
                 }
             }
         }
@@ -469,70 +454,44 @@ public class TorneoDaoMock implements ITorneoDao {
         // Si la fase actual es tercer y cuarto puesto o final, comprobar ambos registros
 
         Torneo t = torneos[idTorneo];
-        if(t == null || t.getFase() != FASE_TERMINADO_ID){
+        if(t == null || t.getFase() == FASE_TERMINADO_ID){
             return false;
         }
 
-        Fase fase = fases[idFaseActual];
+        boolean hayRegistros = false;
 
 
         for (int i = 0; i < registros.length; i++) {
 
             Registro r = registros[i];
 
-            if(r != null && r.getTorneo() == idTorneo && r.getFase() == idFaseActual && ! Boolean.parseBoolean(String.valueOf(Config.FASE_SIN_EMPEZAR_ID)) ){
-                return true;
+            if(r !=null && r.getTorneo() == idTorneo && r.getFase() == idFaseActual){
+
+                hayRegistros = true;
+                if(r.getGanador() == FASE_SIN_EMPEZAR_ID){
+                    return false;
+                }
             }
-            if(r!= null && r.getFase() == FASE_TERCER_CUARTO_ID || r.getFase() == FASE_FINAL_ID ){
-
-
-
-                /*
-                return  r.getTorneo();
-                return r.getFase();
-
-
-                 */
-
-            }
-
-
+        }
+        if (!hayRegistros){
+            return false;
         }
 
+        if(idFaseActual == FASE_TERCER_CUARTO_ID ||  idFaseActual == FASE_FINAL_ID ){
 
+            int contador = 0;
 
+            for (int i = 0; i < registros.length; i++) {
+                Registro r = registros[i];
+                if (r !=null && r.getTorneo() == idTorneo && r.getFase() == idFaseActual && r.getGanador() !=FASE_SIN_EMPEZAR_ID){
+                    contador++;
+                }
+            }
 
+            return contador == 2;
 
-
-
-
-//
-//        for (int i = 0; i < registros.length; i++) {
-//
-//            Registro r = registros[i];
-//
-//            if(r !=null && !Boolean.parseBoolean(Config.FASE_TERMINADO) && r.getGanador() >0 ){
-//                if(idFaseActual == FASE_TERCER_CUARTO_ID && idFaseActual == FASE_FINAL_ID){
-//                    avanzarFase(idTorneo);
-//                }
-//
-//            }
-//
-//
-//        }
-
-
-
-
-
-
-
-
-
-
-
+        }
         return true;
-
     }
 
     /**
@@ -577,7 +536,7 @@ public class TorneoDaoMock implements ITorneoDao {
         for (int i = 0; i < torneos.length; i++) {
 
             Torneo t = torneos[i];
-            if(t !=null && t == torneo &&!Boolean.parseBoolean(Config.FASE_SIN_EMPEZAR)){
+            if(t !=null && t == torneo && t.getFase() == FASE_SIN_EMPEZAR_ID){
                 t.avanzarFase();
                 return avanzarFase;
             } else if (avanzarFase) {
@@ -621,9 +580,30 @@ public class TorneoDaoMock implements ITorneoDao {
         // Obtener un array auxiliar con los ids de los equipos ganadores de semifinales de los registros
         // Definir los partidos de tercer puesto y final con los ganadores y perdedores de semifinales en los registros
 
+        int idFaseAnterior = 0;
+
+        int idFaseNueva = 0;
+        for (int i = 0; i < torneos.length; i++) {
+
+            Torneo t = torneos[i];
+            if (t != null && t == torneo && torneo.getFase() == FASE_SIN_EMPEZAR_ID){
+                avanzarFase(FASE_FINAL_ID);
+                avanzarFase(FASE_TERCER_CUARTO_ID);
+                return true;
+
+                /*
+                if (idFaseAnterior == FASE_SEMIFINALES_ID && idFaseNueva == FASE_FINAL_ID){
 
 
 
+                }
+                
+                 */
+
+
+            }
+
+        }
 
 
 
