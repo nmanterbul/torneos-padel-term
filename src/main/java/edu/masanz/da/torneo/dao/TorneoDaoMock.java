@@ -569,6 +569,7 @@ public class TorneoDaoMock implements ITorneoDao {
 
 
 
+
         return false;
     }
 
@@ -580,61 +581,89 @@ public class TorneoDaoMock implements ITorneoDao {
         // Obtener un array auxiliar con los ids de los equipos ganadores de semifinales de los registros
         // Definir los partidos de tercer puesto y final con los ganadores y perdedores de semifinales en los registros
 
-        int idFaseAnterior = 0;
 
-        int idFaseNueva = 0;
-        for (int i = 0; i < torneos.length; i++) {
+        if (torneo == null || torneo.getFase() != FASE_SEMIFINALES_ID){
 
-            Torneo t = torneos[i];
-            if (t != null && t == torneo && torneo.getFase() == FASE_SIN_EMPEZAR_ID){
-                avanzarFase(FASE_FINAL_ID);
-                avanzarFase(FASE_TERCER_CUARTO_ID);
-                return true;
+            return false;
+        }
 
-                /*
-                if (idFaseAnterior == FASE_SEMIFINALES_ID && idFaseNueva == FASE_FINAL_ID){
+        if (torneo.getId() != FASE_SEMIFINALES_ID){
+            return false;
+        }
+
+        int[] ganadores = new int[2];
+        int[] perdedores = new int[2];
+        int numero = 0;
 
 
+        for (int i = 0; i < registros.length; i++) {
 
+            Registro r = registros[i];
+
+            if (r !=null && r.getTorneo() == torneo.getId() && r.getFase() == FASE_SEMIFINALES_ID){
+                ganadores[numero] = r.getGanador();
+
+                if (r.getGanador() == r.getEquipo1()){
+                    perdedores[numero] = r.getEquipo2();
+                }else {
+                    perdedores[numero] = r.getEquipo1();
                 }
-                
-                 */
-
-
+                numero++;
             }
+        }
 
+        if (numero != 2){
+            return false;
+        }
+
+
+        Registro finalRegistro = new Registro();
+        finalRegistro.setTorneo(torneo.getId());
+        finalRegistro.setFase(FASE_FINAL_ID);
+        finalRegistro.setEquipo1(ganadores[0]);
+        finalRegistro.setEquipo2(ganadores[1]);
+        finalRegistro.setGanador(FASE_SIN_EMPEZAR_ID);
+
+
+
+        Registro tercerCuartoRegistro = new Registro();
+        tercerCuartoRegistro.setTorneo(torneo.getId());
+        tercerCuartoRegistro.setFase(FASE_TERCER_CUARTO_ID);
+        tercerCuartoRegistro.setEquipo1(perdedores[0]);
+        tercerCuartoRegistro.setEquipo2(perdedores[1]);
+        tercerCuartoRegistro.setGanador(FASE_SIN_EMPEZAR_ID);
+
+
+
+        boolean insertadoFinal = false;
+        boolean insertadoTercero = false;
+
+        for (int i = 0; i <registros.length; i++) {
+            if (registros[i] == null){
+                registros[i] = finalRegistro;
+                insertadoFinal = true;
+                break;
+            }
+        }
+
+        for (int i = 0; i < registros.length; i++) {
+
+            if (registros[i] == null){
+
+                registros[i] = tercerCuartoRegistro;
+                insertadoTercero = true;
+                break;
+            }
+        }
+
+
+        if(!insertadoFinal || !insertadoTercero){
+            return false;
         }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        torneo.setFase(FASE_FINAL_ID);
 
 
         return true;
@@ -647,14 +676,19 @@ public class TorneoDaoMock implements ITorneoDao {
         // Si se puede, avanzar la fase del torneo a Terminado
 
 
+        if (torneo !=null && torneo.getFase() != FASE_TERCER_CUARTO_ID){
+            return false;
+        }
+
+        int idFaseAnterior =  FASE_TERCER_CUARTO_ID;
+        int idFaseNueva =  FASE_FINAL_ID;
         for (int i = 0; i <torneos.length; i++) {
 
             Torneo t = torneos[i];
 
-            int idFaseAnterior =  t.getFase();
-            int idFaseNueva =  t.getFase();
-            if (t != null && idFaseAnterior == FASE_TERCER_CUARTO_ID || idFaseAnterior == FASE_FINAL_ID && idFaseNueva == FASE_TERMINADO_ID){
-                avanzarFase(FASE_TERMINADO_ID);
+            if (t != null && t == torneo){
+                torneo.setFase(FASE_TERMINADO_ID);
+                
                 return true;
 
             }
